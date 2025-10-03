@@ -15,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
   title: "Uziel Ensign — Portfolio",
   description:
     "Portfolio of Uziel Ensign — React & TypeScript developer. Browse projects and contact information.",
