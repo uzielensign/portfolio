@@ -15,7 +15,7 @@ export default function Home() {
       <ThemeToggle toggleTheme={toggleTheme} isDark={isDark} />
       <section className="max-w-2xl w-full text-center py-12">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-          Hi, I&apos;m Uziel Ensign
+          Hi, I&apos;m Arni Sanchez
         </h1>
         <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8">
           Welcome to my portfolio! I&apos;m a React and TypeScript developer

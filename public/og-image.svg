@@ -12,8 +12,7 @@
   </defs>
   <rect class="bg" width="1200" height="630" rx="24"/>
   <g transform="translate(80,180)">
-    <text class="title">Uziel Ensign</text>
+    <text class="title">Arni Sanchez</text>
     <text class="subtitle" y="64">React · TypeScript · Frontend</text>
   </g>
 </svg>
-

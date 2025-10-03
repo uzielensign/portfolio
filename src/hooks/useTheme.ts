@@ -2,57 +2,45 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-function readInitialTheme(): boolean | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const stored = localStorage.getItem("theme");
-    if (stored === "dark") return true;
-    if (stored === "light") return false;
-    return (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    );
-  } catch {
-    return null;
-  }
-}
-
 export default function useTheme() {
-  const [isDark, setIsDark] = useState<boolean | null>(() => readInitialTheme());
+  // Start with null so server and initial client render match. The actual
+  // theme is determined in useEffect which runs only on the client.
+  const [isDark, setIsDark] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // If we don't yet know the theme (SSR or blocked access), determine it now on the client
-    if (isDark === null) {
-      try {
-        const stored = localStorage.getItem("theme");
-        if (stored === "dark") {
-          setIsDark(true);
-          return;
-        }
-        if (stored === "light") {
-          setIsDark(false);
-          return;
-        }
-        if (
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches
-        ) {
-          setIsDark(true);
-        } else {
-          setIsDark(false);
-        }
-      } catch {
-        setIsDark(false);
+    // Determine theme on the client and apply it.
+    try {
+      const stored = localStorage.getItem("theme");
+      if (stored === "dark") {
+        setIsDark(true);
+        document.documentElement.classList.add("dark");
+        return;
       }
-      return;
-    }
+      if (stored === "light") {
+        setIsDark(false);
+        document.documentElement.classList.remove("dark");
+        return;
+      }
 
-    // Apply and persist the selected theme
+      const prefersDark =
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      setIsDark(prefersDark);
+      document.documentElement.classList.toggle("dark", prefersDark);
+    } catch {
+      setIsDark(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDark === null) return;
     try {
       document.documentElement.classList.toggle("dark", isDark);
       localStorage.setItem("theme", isDark ? "dark" : "light");
     } catch {
-      // ignore errors (e.g. localStorage not available)
+      // ignore
     }
   }, [isDark]);
 

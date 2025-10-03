@@ -1,4 +1,4 @@
-# Uziel Ensign — Portfolio
+# Arni Sanchez — Portfolio
 
 This repository contains a small personal portfolio built with Next.js, TypeScript and Tailwind CSS.
 
@@ -34,5 +34,3 @@ Notes
 
 Contact
 - Email: (replace with your email) — include a visible email address on the Contact page.
-
-

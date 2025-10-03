@@ -16,25 +16,25 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
-  title: "Uziel Ensign — Portfolio",
+  title: "Arni Sanchez — Portfolio",
   description:
-    "Portfolio of Uziel Ensign — React & TypeScript developer. Browse projects and contact information.",
+    "Portfolio of Arni Sanchez — React & TypeScript developer. Browse projects and contact information.",
   openGraph: {
-    title: "Uziel Ensign — Portfolio",
+    title: "Arni Sanchez — Portfolio",
     description:
-      "Portfolio of Uziel Ensign — React & TypeScript developer. Browse projects and contact information.",
+      "Portfolio of Arni Sanchez — React & TypeScript developer. Browse projects and contact information.",
     images: [
       {
         url: "/og-image.svg",
-        alt: "Uziel Ensign — Portfolio",
+        alt: "Arni Sanchez — Portfolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Uziel Ensign — Portfolio",
+    title: "Arni Sanchez — Portfolio",
     description:
-      "Portfolio of Uziel Ensign — React & TypeScript developer. Browse projects and contact information.",
+      "Portfolio of Arni Sanchez — React & TypeScript developer. Browse projects and contact information.",
     images: ["/og-image.svg"],
   },
 };
@@ -73,7 +73,7 @@ export default function RootLayout({
           <nav className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
             <div>
               <Link href="/" className="font-semibold">
-                Uziel Ensign
+                Arni Sanchez
               </Link>
             </div>
             <div className="flex items-center gap-4">

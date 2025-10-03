@@ -20,14 +20,14 @@ export default function About() {
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
           <Image
             src="/file.svg"
-            alt="Uziel Ensign"
+            alt="Arni Sanchez"
             width={160}
             height={160}
             className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-lg mb-6 md:mb-0"
           />
           <div className="text-left">
             <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-4">
-              Hi, I&apos;m Uziel Ensign, a passionate React and TypeScript
+              Hi, I&apos;m Arni Sanchez, a passionate React and TypeScript
               developer. I love crafting modern, responsive web applications and
               continually learning new technologies.
             </p>
