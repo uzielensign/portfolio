@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* Respect user's color scheme as a fallback; the app also supports toggling the `dark` class on <html> */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+  body {
+    background-color: #0a0a0a;
+  }
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+body {
+  background-color: #fff;
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes blob1 {
+  0%,
+  100% {
+    transform: translate(-50%, 0) scale(1) skewY(0deg);
+    opacity: 0.7;
+  }
+  20% {
+    transform: translate(-55%, 10px) scale(1.08) skewY(3deg);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(-60%, -15px) scale(0.97) skewY(-4deg);
+    opacity: 0.65;
+  }
+  60% {
+    transform: translate(-45%, 20px) scale(1.05) skewY(2deg);
+    opacity: 0.75;
+  }
+  80% {
+    transform: translate(-48%, -10px) scale(1.02) skewY(-2deg);
+    opacity: 0.7;
+  }
+}
+@keyframes blob2 {
+  0%,
+  100% {
+    transform: scale(1) translateY(0) skewX(0deg);
+    opacity: 0.6;
+  }
+  25% {
+    transform: scale(1.12) translateY(-25px) skewX(2deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(0.95) translateY(30px) skewX(-3deg);
+    opacity: 0.55;
+  }
+  75% {
+    transform: scale(1.08) translateY(-15px) skewX(1deg);
+    opacity: 0.65;
+  }
+}
+@keyframes blob3 {
+  0%,
+  100% {
+    transform: scale(1) translateX(0) skewY(0deg);
+    opacity: 0.5;
+  }
+  30% {
+    transform: scale(1.07) translateX(25px) skewY(2deg);
+    opacity: 0.6;
+  }
+  60% {
+    transform: scale(0.93) translateX(-20px) skewY(-3deg);
+    opacity: 0.45;
+  }
+  90% {
+    transform: scale(1.1) translateX(10px) skewY(1deg);
+    opacity: 0.55;
+  }
+}
+@keyframes gradient-move {
+  0%,
+  100% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+@keyframes gradient-move-smooth {
+  0%,
+  100% {
+    background-position: 0 50%;
+  }
+  25% {
+    background-position: 50% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  75% {
+    background-position: 50% 0;
+  }
+}
+.animate-blob1 {
+  animation: blob1 16s ease-in-out infinite;
+}
+.animate-blob2 {
+  animation: blob2 18s ease-in-out infinite;
+}
+.animate-blob3 {
+  animation: blob3 20s ease-in-out infinite;
+}
+.animate-gradient-move {
+  background-size: 200% 200%;
+  animation: gradient-move 2.8s ease-in-out infinite;
+}
+.animate-gradient-move-smooth {
+  background-size: 300% 300%;
+  animation: gradient-move-smooth 4.6s ease-in-out infinite;
+}
+.animate-fadein {
+  animation: fadeIn 1.2s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Animated gradient background for hero section */
+.hero-gradient-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: #111; /* minimal, dark solid background */
+  opacity: 0.7;
+}
+
+img.person-typing-svg {
+  /* In light mode, SVG background is always pure white */
+  filter: none;
+}
+.dark img.person-typing-svg {
+  /* In dark mode, invert SVG for a dark background and adapted colors */
+  filter: invert(1) hue-rotate(180deg) brightness(0.8) contrast(1.1);
+}
+.dark-mode-only {
+  display: none;
+}
+.dark .dark-mode-only {
+  display: inline;
+}
+
+/* Hide the animated illustration in light mode, show only in dark mode */
+.person-typing-svg .dark-mode-only {
+  display: none;
+}
+.dark .person-typing-svg .dark-mode-only {
+  display: inline;
+}
