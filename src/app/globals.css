@@ -181,3 +181,17 @@ img.person-typing-svg {
 .dark .person-typing-svg .dark-mode-only {
   display: inline;
 }
+
+/* Page title styling: black in light mode, animated gradient text in dark mode */
+.page-title {
+  color: #000;
+}
+.dark .page-title {
+  /* animated gradient text in dark mode */
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-size: 300% 300%;
+  animation: gradient-move-smooth 4.6s ease-in-out infinite;
+}

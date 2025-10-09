@@ -1,41 +1,53 @@
 "use client";
 import Link from "next/link";
 import React from "react";
-import useTheme from "../hooks/useTheme";
+import useTheme from "@/hooks/useTheme";
 
 export default function Home() {
   const { isDark } = useTheme();
 
-  // Don&apos;t render until theme is determined to avoid mismatch
+  // Don't render until theme is determined to avoid mismatch
   if (isDark === null) return null;
 
+  const imClass = isDark
+    ? "mx-2 inline-block font-extrabold not-italic normal-case leading-tight bg-white text-black px-3 py-1 rounded-md"
+    : "mx-2 inline-block font-extrabold not-italic normal-case leading-tight animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent";
+
   return (
-    <main className="min-h-screen w-full flex flex-col items-center justify-start px-4 pt-12 transition-colors duration-300 relative overflow-hidden bg-white dark:bg-gray-900 font-sans">
+    <main className="min-h-screen w-full flex flex-col items-center justify-start px-4 pt-8 transition-colors duration-300 relative overflow-hidden bg-white dark:bg-gray-900 font-sans">
       {/* Animated background only in dark mode */}
       <div className="absolute inset-0 z-0 pointer-events-none dark:block hidden">
         <div className="hero-gradient-bg"></div>
         <div aria-hidden="true" className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute animate-blob1 -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-blue-800/40 via-purple-800/30 to-pink-800/30 rounded-full blur-3xl opacity-70"></div>
-          <div className="absolute animate-blob2 top-40 right-[-200px] w-[400px] h-[400px] bg-gradient-to-br from-pink-800/30 via-blue-800/20 to-purple-800/20 rounded-full blur-2xl opacity-60"></div>
-          <div className="absolute animate-blob3 bottom-[-150px] left-[-150px] w-[350px] h-[350px] bg-gradient-to-tl from-purple-800/30 via-blue-800/20 to-pink-800/20 rounded-full blur-2xl opacity-50"></div>
+          <div className="absolute animate-blob1 -top-28 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gradient-to-tr from-blue-800/40 via-purple-800/30 to-pink-800/30 rounded-full blur-3xl opacity-70"></div>
+          <div className="absolute animate-blob2 top-36 right-[-200px] w-[400px] h-[400px] bg-gradient-to-br from-pink-800/30 via-blue-800/20 to-purple-800/20 rounded-full blur-2xl opacity-60"></div>
+          <div className="absolute animate-blob3 bottom-[-130px] left-[-130px] w-[350px] h-[350px] bg-gradient-to-tl from-purple-800/30 via-blue-800/20 to-pink-800/20 rounded-full blur-2xl opacity-50"></div>
         </div>
       </div>
-      <section className="relative z-10 max-w-4xl w-full flex flex-col items-center justify-start pt-8 gap-10 text-center font-sans">
-        {/* Remove the card background, keep only the content */}
-        <div className="flex-1 flex flex-col items-center w-full font-sans">
-          <h1 className="text-5xl font-extrabold text-center mb-2 animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Hi,{" "}
-            <span className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent dark:text-white !bg-none !animate-none font-extrabold not-italic normal-case">
-              I'm{" "}
+
+      <section className="relative z-10 max-w-4xl w-full flex flex-col items-center justify-start pt-6 gap-10 text-center font-sans">
+        {/* Content centered upper-middle */}
+        <div className="flex-1 flex flex-col items-center w-full font-sans mt-8 md:mt-0">
+          <h1 className="mt-6 md:mt-0 text-5xl md:text-6xl font-extrabold text-center mb-2 leading-tight">
+            <span className="inline-block mr-2 animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Hi,
             </span>
-            Arni Sanchez
+            <span className={imClass}>
+              I&apos;m
+            </span>
+            <span className="inline-block ml-2 animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              Arni Sanchez
+            </span>
           </h1>
-          <h2 className="text-2xl font-semibold text-center text-gray-700 dark:text-gray-200 mb-4">
+
+          <h2 className="text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-4">
             Self-Motivated Learner &amp; Passionate Technologist
           </h2>
-          <p className="text-lg text-center text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+
+          <p className="text-lg text-center text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Dedicated to mastering new skills and delivering innovative solutions. I thrive on challenges and am committed to continuous growth in the ever-evolving world of technology.
           </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://github.com/uzielensign?tab=repositories"

@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { projects } from "../../data/projects";
-import useTheme from "../../hooks/useTheme";
+import { projects } from "@/data/projects";
+import useTheme from "@/hooks/useTheme";
 
 export default function Projects() {
   const { isDark } = useTheme();
@@ -19,7 +19,7 @@ export default function Projects() {
         </div>
       </div>
       <section className="max-w-4xl w-full relative z-10 font-sans pt-8">
-        <h1 className="text-4xl font-extrabold text-center mb-6 text-black dark:bg-gradient-to-r dark:from-blue-500 dark:via-purple-500 dark:to-pink-500 dark:bg-clip-text dark:text-transparent dark:animate-gradient-move-smooth">
+        <h1 className="page-title text-4xl font-extrabold text-center mb-6">
           Projects
         </h1>
         <div className="grid gap-6 md:grid-cols-2">

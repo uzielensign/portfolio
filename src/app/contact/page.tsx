@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import useTheme from "../../hooks/useTheme";
+import useTheme from "@/hooks/useTheme";
 
 export default function Contact() {
   const { isDark } = useTheme();
@@ -17,7 +17,7 @@ export default function Contact() {
         </div>
       </div>
       <section className="max-w-2xl w-full text-center relative z-10 font-sans pt-8">
-        <h1 className="text-4xl font-extrabold text-center mb-6 text-black dark:bg-gradient-to-r dark:from-blue-500 dark:via-purple-500 dark:to-pink-500 dark:bg-clip-text dark:text-transparent dark:animate-gradient-move-smooth">
+        <h1 className="page-title text-4xl font-extrabold text-center mb-6">
           Contact
         </h1>
         <p className="text-lg text-gray-700 dark:text-gray-300 mb-6">I’d love to hear from you — whether it’s about a project, collaboration, or just to say hi.</p>
