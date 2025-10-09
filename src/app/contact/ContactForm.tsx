@@ -1,0 +1,209 @@
+"use client";
+import React, { useState, useRef } from "react";
+import { useForm, ValidationError } from "@formspree/react";
+
+// Read the Formspree form ID from environment; the component will require this to be set.
+const ENV_FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID;
+
+// Top-level wrapper: show a friendly warning when the environment variable is missing.
+export default function ContactForm(): React.ReactElement {
+  if (!ENV_FORMSPREE_FORM_ID) {
+    return (
+      <div className="mx-auto max-w-xl bg-yellow-50 border border-yellow-300 rounded-lg p-6 shadow-sm">
+        <h3 className="text-xl font-semibold mb-2 text-yellow-800">Contact form is not configured</h3>
+        <p className="text-sm text-yellow-700">This site is missing the required Formspree configuration. To enable the contact form, set the <code className="bg-yellow-100 px-1 rounded">NEXT_PUBLIC_FORMSPREE_FORM_ID</code> environment variable to your Formspree form ID and restart the app.</p>
+        <p className="mt-3 text-sm text-yellow-700">Example (zsh):</p>
+        <pre className="mt-2 p-2 rounded bg-yellow-100 text-sm">{'export NEXT_PUBLIC_FORMSPREE_FORM_ID="f/yourFormId"'}</pre>
+      </div>
+    );
+  }
+
+  // If the env var exists, render the actual form component that uses the Formspree hook.
+  return <ContactFormWithHook formId={ENV_FORMSPREE_FORM_ID} />;
+}
+
+// Inner component that uses hooks — it's safe because it's only rendered when a valid formId exists.
+function ContactFormWithHook({ formId }: { formId: string }): React.ReactElement {
+  // Normalize formId: allow env var to be either "mvgwbnvd" or "f/mvgwbnvd" and strip the leading "f/" if present.
+  const normalizedId = formId && formId.startsWith("f/") ? formId.slice(2) : formId;
+  const [state, handleSubmit] = useForm(normalizedId);
+  const [clientErrors, setClientErrors] = useState<Record<string, string | null>>({});
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [localSucceeded, setLocalSucceeded] = useState(false);
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  function validateEmail(email: string) {
+    // Simple RFC-5322-ish regex for basic validation
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  async function submitFromElement(formEl: HTMLFormElement | null) {
+    if (!formEl) return;
+    setClientErrors({});
+    setIsProcessing(true);
+
+    const form = new FormData(formEl);
+    const honeypot = (form.get("hp") || "").toString().trim();
+    if (honeypot) {
+      console.debug('[ContactForm] honeypot filled, ignoring submission (programmatic)');
+      setIsProcessing(false);
+      return;
+    }
+
+    const firstName = (form.get("firstName") || "").toString().trim();
+    const lastName = (form.get("lastName") || "").toString().trim();
+    const email = (form.get("email") || "").toString().trim();
+    const message = (form.get("message") || "").toString().trim();
+
+    const errors: Record<string, string> = {};
+    if (!firstName) errors.firstName = "First name is required.";
+    if (!lastName) errors.lastName = "Last name is required.";
+    if (!email) errors.email = "Email is required.";
+    else if (!validateEmail(email)) errors.email = "Please enter a valid email address.";
+    if (!message) errors.message = "Message is required.";
+
+    if (Object.keys(errors).length > 0) {
+      setClientErrors(errors);
+      setIsProcessing(false);
+      return;
+    }
+
+    // Programmatically POST to our server-side proxy which forwards to Formspree.
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: form,
+      });
+
+      if (response.ok) {
+        setLocalSucceeded(true);
+      } else {
+        // Attempt to parse and show server-side errors
+        try {
+          const data = await response.json();
+          console.error('[ContactForm] /api/contact error response', data);
+          if (data && data.errors && Array.isArray(data.errors)) {
+            setClientErrors({ _server: data.errors.map((e: any) => e.message || JSON.stringify(e)).join(' ') });
+          } else if (data && data.error) {
+            setClientErrors({ _server: data.error.toString() });
+          }
+        } catch (jsonErr) {
+          console.error('[ContactForm] failed to parse /api/contact error response', jsonErr);
+        }
+      }
+    } catch (err) {
+      console.error('[ContactForm] programmatic submit fetch error to /api/contact', err);
+      setClientErrors({ _server: 'Network error while submitting the form.' });
+    } finally {
+      setIsProcessing(false);
+    }
+  }
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // Prevent native HTML submit behavior and route through the programmatic submit path
+    e.preventDefault();
+    await submitFromElement(e.currentTarget as HTMLFormElement);
+  };
+
+  if (state.succeeded || localSucceeded) {
+    return (
+      <div className="mx-auto max-w-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm">
+        <h3 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-gray-100">Thanks — I got your message!</h3>
+        <p className="text-gray-700 dark:text-gray-300">I appreciate you reaching out. I’ll get back to you as soon as I can.</p>
+      </div>
+    );
+  }
+
+  // Normalize server-side errors to a typed array for safe rendering
+  const serverErrors: { message?: string }[] = Array.isArray(state.errors)
+    ? (state.errors as { message?: string }[])
+    : [];
+
+  return (
+    <form ref={formRef} onSubmit={onSubmit} className="mx-auto max-w-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 shadow-sm">
+      {/* Honeypot - hidden from users, intended to trap bots */}
+      <input name="hp" type="text" autoComplete="off" tabIndex={-1} className="hidden" aria-hidden="true" />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <label className="flex flex-col text-sm">
+          <span className="font-medium text-gray-700 dark:text-gray-200">First Name <span className="text-red-500">*</span></span>
+          <input
+            name="firstName"
+            type="text"
+            className="mt-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {clientErrors.firstName && <span className="text-red-500 text-xs mt-1">{clientErrors.firstName}</span>}
+        </label>
+
+        <label className="flex flex-col text-sm">
+          <span className="font-medium text-gray-700 dark:text-gray-200">Last Name <span className="text-red-500">*</span></span>
+          <input
+            name="lastName"
+            type="text"
+            className="mt-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {clientErrors.lastName && <span className="text-red-500 text-xs mt-1">{clientErrors.lastName}</span>}
+        </label>
+      </div>
+
+      <label className="flex flex-col text-sm mt-4">
+        <span className="font-medium text-gray-700 dark:text-gray-200">Email <span className="text-red-500">*</span></span>
+        <input
+          name="email"
+          type="email"
+          className="mt-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {clientErrors.email && <span className="text-red-500 text-xs mt-1">{clientErrors.email}</span>}
+        <ValidationError prefix="Email" field="email" errors={state.errors} />
+      </label>
+
+      {/* Message textarea */}
+      <label className="flex flex-col text-sm mt-4">
+        <span className="font-medium text-gray-700 dark:text-gray-200">Message <span className="text-red-500">*</span></span>
+        <textarea
+          name="message"
+          rows={6}
+          className="mt-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Write your message here..."
+        />
+        {clientErrors.message && <span className="text-red-500 text-xs mt-1">{clientErrors.message}</span>}
+        <ValidationError prefix="Message" field="message" errors={state.errors} />
+      </label>
+
+      <label className="flex flex-col text-sm mt-4">
+        <span className="font-medium text-gray-700 dark:text-gray-200">Phone Number <span className="text-xs text-gray-500">(optional)</span></span>
+        <input
+          name="phone"
+          type="tel"
+          className="mt-1 px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="(optional)"
+        />
+      </label>
+
+      <div className="mt-6 flex items-center justify-between">
+        <button
+          type="button"
+          onClick={() => submitFromElement(formRef.current)}
+          disabled={state.submitting || isProcessing}
+          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 disabled:opacity-50"
+        >
+          {state.submitting || isProcessing ? "Sending..." : "Send Message"}
+        </button>
+        {/* Small inline feedback so clicking the button immediately shows activity */}
+        {(isProcessing || state.submitting) && (
+          <div className="text-sm text-gray-600 dark:text-gray-300 ml-3">Processing...</div>
+        )}
+        <p className="text-sm text-gray-600 dark:text-gray-400">Fields marked with <span className="text-red-500">*</span> are required.</p>
+      </div>
+
+      {/* Show server-side errors if present */}
+      {serverErrors.length > 0 && (
+        <div className="mt-4 text-sm text-red-600">
+          {serverErrors.map((err, i) => (
+            <div key={i}>{err.message}</div>
+          ))}
+        </div>
+      )}
+    </form>
+  );
+}
