@@ -1,55 +1,46 @@
-# Arni Sanchez — Portfolio
-
-This repository contains a small personal portfolio built with Next.js, TypeScript and Tailwind CSS.
-
-Features
-- Light/dark theme toggle (persisted to localStorage)
-- Projects and About pages
-- Simple, responsive UI using Tailwind
+Arni Sanchez — Portfolio
 
 Quick start
 
-1. Install dependencies
+Install and run locally:
 
 ```bash
+# from repo root (path with spaces quoted on macOS/zsh)
+cd "/Users/ninifox/Library/CloudStorage/OneDrive-EnsignCollege/CS 220/portfolio"
 npm install
-```
-
-2. Run development server
-
-```bash
 npm run dev
+# open http://localhost:3000
 ```
 
-3. Build for production
+Build for production locally:
 
 ```bash
 npm run build
-npm start
+npm run start
 ```
 
-Notes
-- This repo includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that runs lint and build on pushes.
-- The site uses an Open Graph image at `/og-image.svg` for social previews.
+Deploying to Vercel
+
+This project is a Next.js app and is ready for Vercel. Basic steps:
+
+1. Push your repository to GitHub (or GitLab/Bitbucket).
+2. Create a new project on Vercel and connect the repo.
+3. Vercel will detect Next.js and use the `npm run build` command automatically. Ensure the project uses Node >= 18.
+4. The repo already contains `vercel.json` which sets NEXT_TELEMETRY_DISABLED during builds.
+
+Notes & small visual tweaks applied
+
+- Tightened hero spacing and responsive typography in `src/app/page.tsx`:
+  - reduced top padding and max width of the hero container (now `max-w-3xl`)
+  - converted H1 content into a flex row with controlled gaps to perfectly balance "Hi, I'm Arni Sanchez"
+  - tightened subheading and paragraph sizes and CTA padding for improved visual balance on small screens
+- Animated dark-mode background and gradient text remain unchanged except spacing adjustments.
+
+If you'd like, I can:
+- Connect and configure a GitHub → Vercel deployment (you'll need to grant access or push the repo to your GitHub account).
+- Add a GitHub Action or Vercel configuration for preview deployments.
+- Further refine spacing (e.g., tweak letter-spacing, exact pixel gaps) after you review a live preview.
 
 Contact
-- Email: (replace with your email) — include a visible email address on the Contact page.
 
-## Deploying to Vercel
-
-When building on Vercel you may see a non-interactive prompt from Next.js about anonymous telemetry. To prevent the build from stalling, this repo includes a `vercel.json` that sets the environment variable `NEXT_TELEMETRY_DISABLED=1` during the build.
-
-Two ways to ensure builds don't prompt:
-
-- Recommended: keep `vercel.json` (already added) in the repo. No further changes needed.
-- Alternate: set `NEXT_TELEMETRY_DISABLED=1` in your Vercel Project settings (Project → Settings → Environment Variables) for the Production and Preview environments.
-
-After you push the `vercel.json` file, Vercel should build non-interactively. If you want to test locally, run these commands on your machine (requires Node.js and npm installed):
-
-```bash
-# from the project root
-npm install
-npm run build
-```
-
-If you prefer to remove `vercel.json` later, you can instead set the environment variable in the Vercel dashboard.
+If you want me to proceed with deploying to Vercel, tell me where the repo is (GitHub URL) and whether you'd like me to create the Vercel project config or instructions for you to follow.

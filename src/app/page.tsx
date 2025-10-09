@@ -10,13 +10,13 @@ export default function Home() {
   if (isDark === null) return null;
 
   // Always use Tailwind's dark: variant so the span is black in light mode and white in dark mode
-  const imClass = "mx-2 inline-block font-extrabold not-italic normal-case leading-tight text-black dark:text-white";
+  const imClass = "inline-block font-extrabold not-italic normal-case leading-tight text-black dark:text-white";
 
   // Keep gradient applied in both themes so these elements continue changing colors
   const gradientTextClass = "inline-block animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent";
 
   return (
-    <main className="min-h-screen w-full flex flex-col items-center justify-start px-4 pt-8 transition-colors duration-300 relative overflow-hidden bg-white dark:bg-gray-900 font-sans">
+    <main className="min-h-screen w-full flex flex-col items-center justify-start px-4 pt-8 md:pt-14 transition-colors duration-300 relative overflow-hidden bg-white dark:bg-gray-900 font-sans">
       {/* Animated background only in dark mode */}
       <div className="absolute inset-0 z-0 pointer-events-none dark:block hidden">
         <div className="hero-gradient-bg"></div>
@@ -27,10 +27,10 @@ export default function Home() {
         </div>
       </div>
 
-      <section className="relative z-10 max-w-4xl w-full flex flex-col items-center justify-start pt-6 gap-10 text-center font-sans">
+      <section className="relative z-10 max-w-3xl w-full flex flex-col items-center justify-center pt-6 gap-6 text-center font-sans">
         {/* Content centered upper-middle */}
-        <div className="flex-1 flex flex-col items-center w-full font-sans mt-8 md:mt-0">
-          <h1 className="mt-6 md:mt-0 text-5xl md:text-6xl font-extrabold text-center mb-2 leading-tight">
+        <div className="flex-1 flex flex-col items-center w-full font-sans mt-6 md:mt-0">
+          <h1 className="mt-2 md:mt-0 text-3xl sm:text-5xl md:text-6xl font-extrabold text-center mb-1 leading-tight tracking-tight sm:tracking-tighter flex items-center justify-center gap-x-0.5 sm:gap-x-2">
             <span className={gradientTextClass}>
               Hi,
             </span>
@@ -42,24 +42,39 @@ export default function Home() {
             </span>
           </h1>
 
-          <h2 className="text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-4">
+          {/* Decorative GIF placed between the heading and the subheading. */}
+          {/* Drop your GIF file into `public/hero.gif` and it will render here. */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster="/hero-poster.png"
+            className="w-48 sm:w-64 md:w-80 mt-4 mb-3 rounded-lg shadow-md object-contain"
+            aria-hidden="true"
+          >
+            <source src="/hero.webm" type="video/webm" />
+            <source src="/hero.mp4" type="video/mp4" />
+          </video>
+
+          <h2 className="text-lg md:text-2xl font-semibold text-center text-gray-800 dark:text-gray-200 mb-3">
             Self-Motivated Learner &amp; Passionate Technologist
           </h2>
 
-          <p className="text-lg text-center text-gray-700 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg leading-relaxed text-center text-gray-700 dark:text-gray-300 mb-6 max-w-prose mx-auto">
             Dedicated to mastering new skills and delivering innovative solutions. I thrive on challenges and am committed to continuous growth in the ever-evolving world of technology.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
               href="https://github.com/uzielensign?tab=repositories"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:scale-105 transition animate-gradient-move"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 py-2 rounded-full font-semibold shadow-lg hover:scale-105 transition animate-gradient-move"
             >
               View Projects
             </a>
             <Link
               href="/about"
-              className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 px-8 py-3 rounded-full font-semibold shadow hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+              className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 px-5 py-2 rounded-full font-semibold shadow hover:bg-gray-100 dark:hover:bg-gray-700 transition"
             >
               About Me
             </Link>
@@ -69,48 +84,3 @@ export default function Home() {
     </main>
   );
 }
-
-/* Add to your globals.css or in a <style jsx global> block:
-@keyframes blob1 {
-  0%, 100% { transform: translate(-50%, 0) scale(1); }
-  33% { transform: translate(-60%, 20px) scale(1.1); }
-  66% { transform: translate(-40%, -20px) scale(0.95); }
-}
-@keyframes blob2 {
-  0%, 100% { transform: scale(1) translateY(0); }
-  50% { transform: scale(1.1) translateY(-30px); }
-}
-@keyframes blob3 {
-  0%, 100% { transform: scale(1) translateX(0); }
-  50% { transform: scale(1.05) translateX(30px); }
-}
-@keyframes gradient-move {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
-@keyframes gradient-move-smooth {
-  0%, 100% { background-position: 0% 50%; }
-  25% { background-position: 50% 100%; }
-  50% { background-position: 100% 50%; }
-  75% { background-position: 50% 0%; }
-}
-.animate-blob1 { animation: blob1 16s ease-in-out infinite; }
-.animate-blob2 { animation: blob2 18s ease-in-out infinite; }
-.animate-blob3 { animation: blob3 20s ease-in-out infinite; }
-.animate-gradient-move { background-size: 200% 200%; animation: gradient-move 4s ease-in-out infinite; }
-.animate-gradient-move-smooth {
-  background-size: 300% 300%;
-  animation: gradient-move-smooth 6s ease-in-out infinite;
-}
-.animate-fadein { animation: fadeIn 1.2s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-@keyframes hero-fadein {
-  0% { opacity: 0; transform: translateY(40px); }
-  100% { opacity: 1; transform: none; }
-}
-.animate-hero-fadein {
-  animation: hero-fadein 1.2s cubic-bezier(0.4,0,0.2,1) both;
-}
-.delay-150 { animation-delay: 0.15s; }
-.delay-300 { animation-delay: 0.3s; }
-*/
