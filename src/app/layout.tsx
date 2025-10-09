@@ -15,21 +15,22 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_TITLE = "Arni Sanchez — Portfolio";
+const SITE_DESCRIPTION =
+  "Portfolio of Arni Sanchez — React & TypeScript developer. Browse projects and contact information.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.SITE_URL || "http://localhost:3000"),
-  title: "Arni Sanchez — Portfolio",
-  description:
-    "Portfolio of Arni Sanchez — React & TypeScript developer. Browse projects and contact information.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   openGraph: {
-    title: "Arni Sanchez — Portfolio",
-    description:
-      "Portfolio of Arni Sanchez — React & TypeScript developer. Browse projects and contact information.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Arni Sanchez — Portfolio",
-    description:
-      "Portfolio of Arni Sanchez — React & TypeScript developer. Browse projects and contact information.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
 };
 

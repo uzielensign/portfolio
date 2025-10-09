@@ -10,7 +10,7 @@ export default function ThemeToggle({ isDark, toggleTheme }: Props) {
   return (
     <button
       onClick={toggleTheme}
-      className="absolute top-4 right-4 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-2 rounded transition"
+      className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-2 rounded transition"
       aria-label="Toggle dark mode"
       aria-pressed={isDark}
       title="Toggle theme"

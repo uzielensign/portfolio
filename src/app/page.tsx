@@ -9,15 +9,11 @@ export default function Home() {
   // Don't render until theme is determined to avoid mismatch
   if (isDark === null) return null;
 
-  const imClass = isDark
-    // In dark mode: plain white text (no white background box)
-    ? "mx-2 inline-block font-extrabold not-italic normal-case leading-tight text-white"
-    // In light mode: plain dark text (so only Hi and Arni are gradient-colored)
-    : "mx-2 inline-block font-extrabold not-italic normal-case leading-tight text-black";
+  // Always use Tailwind's dark: variant so the span is black in light mode and white in dark mode
+  const imClass = "mx-2 inline-block font-extrabold not-italic normal-case leading-tight text-black dark:text-white";
 
   // Keep gradient applied in both themes so these elements continue changing colors
   const gradientTextClass = "inline-block animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent";
-  const plainWhiteClass = "inline-block text-white";
 
   return (
     <main className="min-h-screen w-full flex flex-col items-center justify-start px-4 pt-8 transition-colors duration-300 relative overflow-hidden bg-white dark:bg-gray-900 font-sans">
