@@ -1,8 +1,11 @@
+/// <reference types="vitest" />
+/// <reference types="@testing-library/jest-dom" />
+
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
+import { test, expect, vi } from 'vitest';
 
 test('shows warning when NEXT_PUBLIC_FORMSPREE_FORM_ID missing', async () => {
   vi.resetModules();
@@ -24,13 +27,15 @@ test('shows message required validation when submitting empty message', async ()
   // Mock Formspree hook to avoid network/side effects
   vi.mock('@formspree/react', () => {
     return {
-      useForm: (id: string) => [{ succeeded: false, submitting: false, errors: [] }, vi.fn()],
-      ValidationError: ({ prefix, field, errors }: any) => null,
+      // mark the hook param as intentionally unused with a leading underscore
+      useForm: (_id: string) => [{ succeeded: false, submitting: false, errors: [] }, vi.fn()],
+      // Avoid `any` and unused prop names in the mock component
+      ValidationError: (_props: Record<string, unknown>) => null,
     };
   });
 
   const { default: ContactForm } = await import('../app/contact/ContactForm');
-  const { container } = render(<ContactForm />);
+  render(<ContactForm />);
 
   const user = userEvent.setup();
 

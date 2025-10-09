@@ -26,7 +26,8 @@ export default function ContactForm(): React.ReactElement {
 function ContactFormWithHook({ formId }: { formId: string }): React.ReactElement {
   // Normalize formId: allow env var to be either "mvgwbnvd" or "f/mvgwbnvd" and strip the leading "f/" if present.
   const normalizedId = formId && formId.startsWith("f/") ? formId.slice(2) : formId;
-  const [state, handleSubmit] = useForm(normalizedId);
+  // We only need the hook state for rendering; avoid assigning the unused handleSubmit to satisfy lint rules
+  const [state] = useForm(normalizedId);
   const [clientErrors, setClientErrors] = useState<Record<string, string | null>>({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [localSucceeded, setLocalSucceeded] = useState(false);
@@ -83,9 +84,20 @@ function ContactFormWithHook({ formId }: { formId: string }): React.ReactElement
           const data = await response.json();
           console.error('[ContactForm] /api/contact error response', data);
           if (data && data.errors && Array.isArray(data.errors)) {
-            setClientErrors({ _server: data.errors.map((e: any) => e.message || JSON.stringify(e)).join(' ') });
+            // Safely normalize server error objects without using `any`.
+            type FormspreeError = { message?: unknown };
+            const serverMessage = (data.errors as unknown[])
+              .map((e) => {
+                if (typeof e === 'object' && e !== null && 'message' in e) {
+                  const m = (e as FormspreeError).message;
+                  return typeof m === 'string' ? m : JSON.stringify(m);
+                }
+                return String(e);
+              })
+              .join(' ');
+            setClientErrors({ _server: serverMessage });
           } else if (data && data.error) {
-            setClientErrors({ _server: data.error.toString() });
+            setClientErrors({ _server: String(data.error) });
           }
         } catch (jsonErr) {
           console.error('[ContactForm] failed to parse /api/contact error response', jsonErr);
