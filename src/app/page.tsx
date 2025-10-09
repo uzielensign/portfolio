@@ -10,8 +10,14 @@ export default function Home() {
   if (isDark === null) return null;
 
   const imClass = isDark
-    ? "mx-2 inline-block font-extrabold not-italic normal-case leading-tight bg-white text-black px-3 py-1 rounded-md"
+    // In dark mode: plain white text (no white background box)
+    ? "mx-2 inline-block font-extrabold not-italic normal-case leading-tight text-white"
+    // In light mode: gradient-colored text (matches Hi, and Arni Sanchez)
     : "mx-2 inline-block font-extrabold not-italic normal-case leading-tight animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent";
+
+  // Shared classes for the other hero parts so they match behavior across themes
+  const gradientTextClass = "inline-block animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent";
+  const plainWhiteClass = "inline-block text-white";
 
   return (
     <main className="min-h-screen w-full flex flex-col items-center justify-start px-4 pt-8 transition-colors duration-300 relative overflow-hidden bg-white dark:bg-gray-900 font-sans">
@@ -29,13 +35,13 @@ export default function Home() {
         {/* Content centered upper-middle */}
         <div className="flex-1 flex flex-col items-center w-full font-sans mt-8 md:mt-0">
           <h1 className="mt-6 md:mt-0 text-5xl md:text-6xl font-extrabold text-center mb-2 leading-tight">
-            <span className="inline-block mr-2 animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <span className={isDark ? plainWhiteClass : gradientTextClass}>
               Hi,
             </span>
             <span className={imClass}>
               I&apos;m
             </span>
-            <span className="inline-block ml-2 animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <span className={isDark ? plainWhiteClass : gradientTextClass}>
               Arni Sanchez
             </span>
           </h1>
