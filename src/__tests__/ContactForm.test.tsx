@@ -1,6 +1,3 @@
-/// <reference types="vitest" />
-/// <reference types="@testing-library/jest-dom" />
-
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
@@ -27,10 +24,10 @@ test('shows message required validation when submitting empty message', async ()
   // Mock Formspree hook to avoid network/side effects
   vi.mock('@formspree/react', () => {
     return {
-      // mark the hook param as intentionally unused with a leading underscore
-      useForm: (_id: string) => [{ succeeded: false, submitting: false, errors: [] }, vi.fn()],
-      // Avoid `any` and unused prop names in the mock component
-      ValidationError: (_props: Record<string, unknown>) => null,
+      // mock ignores provided id argument intentionally (no unused-param warnings)
+      useForm: () => [{ succeeded: false, submitting: false, errors: [] }, vi.fn()],
+      // simple mock component with no params
+      ValidationError: () => null,
     };
   });
 
