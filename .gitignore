@@ -42,3 +42,7 @@ next-env.d.ts
 
 # JetBrains IDEs
 .idea/
+
+# Local dev log and generated gifs
+dev.log
+public/*.gif
