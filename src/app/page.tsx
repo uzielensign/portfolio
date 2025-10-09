@@ -12,10 +12,10 @@ export default function Home() {
   const imClass = isDark
     // In dark mode: plain white text (no white background box)
     ? "mx-2 inline-block font-extrabold not-italic normal-case leading-tight text-white"
-    // In light mode: gradient-colored text (matches Hi, and Arni Sanchez)
-    : "mx-2 inline-block font-extrabold not-italic normal-case leading-tight animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent";
+    // In light mode: plain dark text (so only Hi and Arni are gradient-colored)
+    : "mx-2 inline-block font-extrabold not-italic normal-case leading-tight text-black";
 
-  // Shared classes for the other hero parts so they match behavior across themes
+  // Keep gradient applied in both themes so these elements continue changing colors
   const gradientTextClass = "inline-block animate-gradient-move-smooth bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent";
   const plainWhiteClass = "inline-block text-white";
 
@@ -35,13 +35,13 @@ export default function Home() {
         {/* Content centered upper-middle */}
         <div className="flex-1 flex flex-col items-center w-full font-sans mt-8 md:mt-0">
           <h1 className="mt-6 md:mt-0 text-5xl md:text-6xl font-extrabold text-center mb-2 leading-tight">
-            <span className={isDark ? plainWhiteClass : gradientTextClass}>
+            <span className={gradientTextClass}>
               Hi,
             </span>
             <span className={imClass}>
               I&apos;m
             </span>
-            <span className={isDark ? plainWhiteClass : gradientTextClass}>
+            <span className={gradientTextClass}>
               Arni Sanchez
             </span>
           </h1>
